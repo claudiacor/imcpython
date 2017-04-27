@@ -23,7 +23,7 @@ class IMCPython:
             if m_abbrev is not None:
                 self.mabbrev_lista.append(m_abbrev)
            
-            aux = self.j2_env.get_template('all.py').render(abbrev_list = self.abbrev_lista, mabbrev_list = self.mabbrev_lista)
+            aux = self.j2_env.get_template('Template.py').render(abbrev_list = self.abbrev_lista, mabbrev_list = self.mabbrev_lista)
             self.out += aux
             self.out += "\n"
             self.abbrev_lista = []
@@ -42,7 +42,7 @@ class IMCPython:
 nw = IMCPython()
 nw.parse_message()
 
-with open("new_file.py", "w") as f:
+with open("src_generated/Definitions.py", "w") as f:
     f.write(nw.out.encode('latin-1'))
   
   
