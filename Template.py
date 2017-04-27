@@ -13,7 +13,7 @@ class {{mabbrev}}(Message):
     def set_{{abbrev}}(self,new):
         self.{{abbrev}} = new
         
-    {% endfor %}
+    {% endfor -%}
     def get_name(self):
         return "{{mabbrev}}"
 
