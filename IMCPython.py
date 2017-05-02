@@ -42,7 +42,16 @@ class IMCPython:
 nw = IMCPython()
 nw.parse_message()
 
-with open("src_generated/Definitions.py", "w") as f:
+with open('src_generated/Definitions.py','wb') as f:
+    f.write('import struct\n')
+with open("src_generated/Definitions.py", "ab") as f:
+    f.write("from copy import deepcopy\n")
+with open("src_generated/Definitions.py", "ab") as f:
     f.write(nw.out.encode('latin-1'))
-  
+
+    #copiar o message.py para o src_generated
+with open('Message.py','rb') as ms:
+    data = ms.read()
+    with open('src_generated/Message.py','wb') as m:
+        m.write(data)
   
