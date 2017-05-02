@@ -1,5 +1,3 @@
-import struct
-from copy import copy
 
 {% for mabbrev in mabbrev_list %}
 class {{mabbrev}}(Message):
