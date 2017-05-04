@@ -1,48 +1,45 @@
 ##erro nos get e set, ver programa que le o xml
-
+#!/usr/bin/python
 import struct
 import time
 
-import Constants
+from Constants import *
 
 class Message():
     def __init__(self):
 	
-        self.sync = 0
-        self.mgid = 0
-        self.size = 0
-        self.timestamp = 0
-        self.src = 0
-        self.src_ent = 0
-        self.dst = 0
-    
+        self.sync = None
+        self.mgid = None
+        self.size = None
+        self.timestamp = None
+        self.src = None
+        self.src_ent = None
+        self.dst = None
+        
         def getName(self):
             return None
-
+        
         def getId(self):
             return None
-
-        def setTimeStamp(self, ts):
+        
+        def setTimeStamp(self, ts=time.time()):
             self.timestamp = ts
             setTimeStampNested(ts)
             return self.timestamp
-
-        def setTimeStamp(self):
-            return setTimeStamp(time.time())
         
         def getTimeStamp(self):
             return self.timestamp
-
+        
         def getSource(self):
             return self.src
-
+        
         def setSource(self, src):
             self.src = src
             setSourceNested(src)
-
+            
         def getSourceEntity(self):
             return self.src_ent
-
+            
         def setSourceEntity(self, src_ent):
             self.src_ent = src_ent
             setSourceEntityNested(src_ent)
@@ -66,7 +63,7 @@ class Message():
 
         def  setSubId(self, subid):
             return None
-            
+        
         def getValueFP(self):
             return 0.0
 
@@ -74,9 +71,7 @@ class Message():
             return None
 
         def getSerializationSize(self):
-            return DUNE_IMC_CONST_HEADER_SIZE +
-        DUNE_IMC_CONST_FOOTER_SIZE +
-        getPayloadSerializationSize()
+            return DUNE_IMC_CONST_HEADER_SIZE + DUNE_IMC_CONST_FOOTER_SIZE + getPayloadSerializationSize()
 
         def getPayloadSerializationSize(self):
             return getFixedSerializationSize() + getVariableSerializationSize()
@@ -93,8 +88,14 @@ class Message():
         def toText(self):
             return toJSON()
 
-        def serializeFields(self):
+        def serializeFields(self, buffer, offset = DUNE_IMC_CONST_HEADER_SIZE):
             self.serialized_fields
+            
+        def serializeHeader(self, buffer, offset = 0):
+            #########################escrever p o buffer
+        
+	def serializeFooter(self, buffer, offset = DUNE_IMC_CONST_HEADER_SIZE + getPayloadSerializationSize()):
+            ###########
 
         def deserializeFields(self):
             return ""
@@ -104,7 +105,7 @@ class Message():
 
         def fieldsToJSON(self):
             return ""
-         
+        
         def setTimeStampNested(self, value):
             return None
 
@@ -114,6 +115,8 @@ class Message():
         def setSourceEntityNested(self, value):
             return None
 
+        
+	# @abstract
         def setDestinationNested(self, value):
             return None
 
