@@ -63,4 +63,4 @@ with open("src_generated/Definitions.py", "ab") as f:
 with open('Message.py','rb') as ms:
     data = ms.read()
     with open('src_generated/Message.py','wb') as m:
-        m.write(data)#!/usr/bin/env/python
+        m.write(data)
