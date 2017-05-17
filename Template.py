@@ -33,7 +33,7 @@ class {{mabbrev}}(Message):
     def serialize(self):
      	#return 
 
-	{% if Type is not none %}
+	{% if Type is not none -%}
 	def serializeFields(self, buffer, offset = DUNE_IMC_CONST_HEADER_SIZE):
    		{% for abbrev, Type, Format in abb_type_form_list -%}    
 	struct.pack_into('<' + {{Format}},buffer,offset, self.{{abbrev}})
