@@ -6,7 +6,7 @@ from xml.etree import ElementTree
 
 class IMCPython:    
     def __init__(self):
-        with open('imc.xml', 'rt') as f:
+        with open('IMC.xml', 'rt') as f:
             self.tree = ElementTree.parse(f)
         self.abbrev_lista = []
         self.mabbrev_lista = []
@@ -34,11 +34,13 @@ class IMCPython:
             self.out += "\n"
             self.form_list = [] 
             self.abbrev_lista = []
-            self.mabbrev_lista = []  
+            self.mabbrev_lista = []
+            self.serial = ""
                        
            #criar tuplo com o abbrev e o tipo 
                                
     def parse_field(self, message_node):
+       # print "#Parse:"
         for field_node in message_node.iter('field'):
             name = field_node.attrib.get('name')
             self.abbrev = field_node.attrib.get('abbrev')
@@ -50,7 +52,10 @@ class IMCPython:
                 
             if type is not None:
             	print "\ttype: " + type
+               # print "\tabbrev: " + self.abbrev
             	form = self.format(type)
+                #print "form: " + form
+                #print "form_list: " + str(self.form_list)
                 self.form_list.append(form)   
                 self.type_lista.append(type)
             	
@@ -59,6 +64,7 @@ class IMCPython:
     def get_serial(self):
     	self.serial = self.serial.join(self.form_list)
         print self.serial
+        #print "\n"
         
     def format(self, type):
         if(type == 'int8_t'):
@@ -82,6 +88,15 @@ class IMCPython:
         elif(type == 'plaintext'):
             #o len tem que ser do q esta dentro da variavel
             return "str(len(self." + self.abbrev + ")) + \'s\'"
+        
+       # elif(type == 'message-list'):
+        #	return
+        
+      	#elif(type == 'message'):
+	#      	return
+    
+	elif(type == 'rawdata'):
+	    return "str(len(self." + self.abbrev + ")) + \'s\'"
         else:
             return "?"
         
