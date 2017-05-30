@@ -42,7 +42,7 @@ class {{mabbrev}}(Message):
    	{% if Type == 'rawdata' or Type == 'plaintext' %}
     nbytes = len(self.{{abbrev}})
 	struct.pack_into('<H' + str(nbytes) + {{Format}},buffer,offset, nbytes, self.{{abbrev}})
-        offset += struct.calcsize('<' + str(nbytes) + {{Format}})
+        offset += struct.calcsize('<H' + str(nbytes) + {{Format}})
 	{% else %}
 	struct.pack_into('<' + {{Format}},buffer,offset, self.{{abbrev}})
     	offset += struct.calcsize('<' + {{Format}})
@@ -54,8 +54,8 @@ class {{mabbrev}}(Message):
     {% if Type == 'rawdata' or Type == 'plaintext' %}
     Nbytes = struct.unpack_from('<H',buffer,offset)
     	offset += struct.calcsize('<H')
-    	self.{{abbrev}} = struct.unpack_from('<' + str(Nbytes) + {{Format}},buffer,offset)
-        offset += struct.calcsize('<' + str(Nbytes) + {{Format}})
+    	self.{{abbrev}} = struct.unpack_from('<' + str(Nbytes[0]) + {{Format}},buffer,offset)
+        offset += struct.calcsize('<' + str(Nbytes[0]) + {{Format}})
     {% else %}
     self.{{abbrev}} = struct.unpack_from('<' + {{Format}},buffer,offset)
         offset += struct.calcsize('<' + {{Format}})
