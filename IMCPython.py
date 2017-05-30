@@ -35,6 +35,7 @@ class IMCPython:
             self.form_list = [] 
             self.abbrev_lista = []
             self.mabbrev_lista = []
+            self.type_lista = []
             self.serial = ""
                        
            #criar tuplo com o abbrev e o tipo 
@@ -47,7 +48,7 @@ class IMCPython:
             type = field_node.attrib.get('type')
             unit = field_node.attrib.get('unit')
             
-            if self.abbrev is not None:
+            if self.abbrev is not None and (self.abbrev != "description"):
                 self.abbrev_lista.append(self.abbrev)
                 
             if type is not None:
@@ -87,7 +88,7 @@ class IMCPython:
             return '\'d\''
         elif(type == 'plaintext'):
             #o len tem que ser do q esta dentro da variavel
-            return "str(len(self." + self.abbrev + ")) + \'s\'"
+            return '\'s\''
         
        # elif(type == 'message-list'):
         #	return
@@ -96,7 +97,7 @@ class IMCPython:
 	#      	return
     
 	elif(type == 'rawdata'):
-	    return "str(len(self." + self.abbrev + ")) + \'s\'"
+	    return '\'s\''
         else:
             return "?"
         
@@ -108,9 +109,11 @@ with open('src_generated/Definitions.py','wb') as f:
 with open("src_generated/Definitions.py", "ab") as f:
     f.write("from copy import deepcopy\n")
 with open("src_generated/Definitions.py", "ab") as f:
+    f.write("from Message import *\n")  
+with open("src_generated/Definitions.py", "ab") as f:
     f.write(nw.out.encode('latin-1'))
 
-    #copiar o message.py para o src_generated
+    #copy message.py to src_generated
 with open('Message.py','rb') as ms:
     data = ms.read()
     with open('src_generated/Message.py','wb') as m:
