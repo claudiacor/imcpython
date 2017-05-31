@@ -10,11 +10,13 @@ class IMCPython:
             self.tree = ElementTree.parse(f)
         self.abbrev_lista = []
         self.mabbrev_lista = []
+        self.mid_lista = []
         self.type_lista = []
         self.abb_type = []
         self.THIS_DIR = os.path.dirname(os.path.abspath(__file__))
         self.j2_env = Environment(loader=FileSystemLoader(self.THIS_DIR), trim_blocks = True)
         self.out = ""
+        self.newfact = ""
         self.serial = ""
         self.form_list = []
             
@@ -26,17 +28,27 @@ class IMCPython:
             m_source = node.attrib.get('source')
             self.parse_field(node)
             self.get_serial()
+            if m_id is not None:
+                self.mid_lista.append(m_id) 
+            
             if m_abbrev is not None:
                 self.mabbrev_lista.append(m_abbrev)
-           
-            aux = self.j2_env.get_template('Template.py').render(abb_type_form_list = self.abb_type_form, mabbrev_list = self.mabbrev_lista)
+
+            self.mabbrev_mid = zip(self.mabbrev_lista,self.mid_lista)
+            aux = self.j2_env.get_template('Template.py').render(abb_type_form_list = self.abb_type_form,mabbrev_mid_list = self.mabbrev_mid)
+            fact = self.j2_env.get_template('Fact.py').render(mabbrev_mid_list = self.mabbrev_mid)
             self.out += aux
             self.out += "\n"
+            self.newfact += fact
+            self.newfact += "\n"
+            print "tuplo: " + str(self.mabbrev_mid)
             self.form_list = [] 
             self.abbrev_lista = []
             self.mabbrev_lista = []
+            self.mid_lista = []
             self.type_lista = []
             self.serial = ""
+            
                        
            #criar tuplo com o abbrev e o tipo 
                                
@@ -113,8 +125,15 @@ with open("src_generated/Definitions.py", "ab") as f:
 with open("src_generated/Definitions.py", "ab") as f:
     f.write(nw.out.encode('latin-1'))
 
+with open("src_generated/Factory.py", 'wb') as n:
+    n.write("from Definitions import *\n")
+with open("src_generated/Factory.py", 'ab') as n:
+    n.write('def produce(name):\n')
+with open("src_generated/Factory.py", 'ab') as n:
+    n.write(nw.newfact.encode('latin-1'))
+
     #copy message.py to src_generated
-with open('Message.py','rb') as ms:
-    data = ms.read()
-    with open('src_generated/Message.py','wb') as m:
-        m.write(data)
+#with open('Message.py','rb') as ms:
+#    data = ms.read()
+#    with open('src_generated/Message.py','wb') as m:
+#        m.write(data)
