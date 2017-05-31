@@ -1,4 +1,4 @@
-{% for mabbrev in mabbrev_list %}
+{% for mabbrev,  m_id in mabbrev_mid_list %}
 class {{mabbrev}}(Message):
    	
 {% if abb_type_form_list|length != 0 %}
