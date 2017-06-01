@@ -12,13 +12,14 @@ class IMCPython:
         self.mabbrev_lista = []
         self.mid_lista = []
         self.type_lista = []
-        self.abb_type = []
+        self.abb_type_form = []
         self.THIS_DIR = os.path.dirname(os.path.abspath(__file__))
         self.j2_env = Environment(loader=FileSystemLoader(self.THIS_DIR), trim_blocks = True)
         self.out = ""
         self.newfact = ""
         self.serial = ""
         self.form_list = []
+        
             
     def parse_message(self):
         for node in self.tree.iter('message'):
@@ -35,22 +36,20 @@ class IMCPython:
                 self.mabbrev_lista.append(m_abbrev)
 
             self.mabbrev_mid = zip(self.mabbrev_lista,self.mid_lista)
-            aux = self.j2_env.get_template('Template.py').render(abb_type_form_id_list = self.abb_type_form_id, mabbrev_mid_list = self.mabbrev_mid)
+            aux = self.j2_env.get_template('Template.py').render(abb_type_form_list = self.abb_type_form, mabbrev_mid_list = self.mabbrev_mid)
             fact = self.j2_env.get_template('Fact.py').render(mabbrev_mid_list = self.mabbrev_mid)
-            print self.mabbrev_mid
+            #print self.mabbrev_mid
             self.out += aux
             self.out += "\n"
             self.newfact += fact
             self.newfact += "\n"
             #print "tuplo: " + str(self.mabbrev_mid)
-            self.form_list = [] 
-            self.abbrev_lista = []
             self.mabbrev_lista = []
-            self.type_lista = []
             self.serial = ""
-            
-                       
-           #criar tuplo com o abbrev e o tipo 
+            self.mid_lista = []
+            self.form_list = []
+            self.type_lista = []
+            self.abbrev_lista = []
                                
     def parse_field(self, message_node):
        # print "#Parse:"
@@ -72,10 +71,9 @@ class IMCPython:
                 self.form_list.append(form)   
                 self.type_lista.append(Type)
             	
-       	self.abb_type_form_id = zip(self.abbrev_lista,self.type_lista,self.form_list,self.mid_lista)
-        #print self.abb_type_form_id
-        self.mid_lista = []
-
+       	self.abb_type_form = zip(self.abbrev_lista,self.type_lista,self.form_list)
+        #print self.abb_type_form
+       
     def get_serial(self):
     	self.serial = self.serial.join(self.form_list)
         #print self.serial
