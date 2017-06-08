@@ -111,11 +111,12 @@ class IMCPython:
 	elif(Type == 'rawdata'):
 	    return '\'s\''
         else:
-            return "?"
+            return "\'?\'"
         
 nw = IMCPython()
 nw.parse_message()
 
+    #generate Definitions.py
 with open('src_generated/Definitions.py','wb') as f:
     f.write('import struct\n')
 with open("src_generated/Definitions.py", "ab") as f:
@@ -127,8 +128,9 @@ with open("src_generated/Definitions.py", "ab") as f:
 with open("src_generated/Definitions.py", "ab") as f:
     f.write(nw.out.encode('latin-1'))
 
+    #generate Factory.py
 with open("src_generated/Factory.py", 'wb') as n:
-    n.write("from Definitions import *\n")
+    n.write("import Definitions as IMC\n")
 with open("src_generated/Factory.py", 'ab') as n:
     n.write('def produce(id):\n')
 with open("src_generated/Factory.py", 'ab') as n:

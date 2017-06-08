@@ -1,9 +1,8 @@
 {% for mabbrev,  m_id in mabbrev_mid_list %}
 class {{mabbrev}}(Message):
    	
-{% if abb_type_form_list|length != 0 %}
+
     def __init__(self):
-{% endif %}
     {% for abbrev, Type, Format in abb_type_form_list -%}
     {% if ((Type == "uint8_t" ) or (Type == "int8_t") or (Type == 'int16_t') or (Type == 'uint16_t') or (Type == 'int32_t') or (Type == 'uint32_t') or (Type == 'int64_t') or (Type == 'fp32_t') or (Type == 'fp64_t')) %}
     self.{{abbrev}} = 0
@@ -15,6 +14,7 @@ class {{mabbrev}}(Message):
     self.{{abbrev}} = None
     {% endif -%}
     {% endfor %}
+    self.mgid = {{m_id}}
     	
     {% for abbrev, Type, Format in abb_type_form_list -%}
     def get_{{abbrev}}(self):
@@ -60,6 +60,11 @@ class {{mabbrev}}(Message):
     	offset += struct.calcsize('<H')
     	self.{{abbrev}} = struct.unpack_from('<' + str(Nbytes[0]) + {{Format}},buffer,offset)
         offset += struct.calcsize('<' + str(Nbytes[0]) + {{Format}})
+    {% elif Type == 'message' %}
+    mid = struct.unpack_from('<H',buffer,offset)[0]
+        offset += struct.calcsize('<H')
+        self.{{abbrev}} = Factory.produce(mid)
+        self.{{abbrev}}.deserializeFields(buffer,offset)
     {% else %}
     self.{{abbrev}} = struct.unpack_from('<' + {{Format}},buffer,offset)
         offset += struct.calcsize('<' + {{Format}})
