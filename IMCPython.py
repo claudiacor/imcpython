@@ -101,13 +101,6 @@ class IMCPython:
         elif(Type == 'plaintext'):
             #o len tem que ser do q esta dentro da variavel
             return '\'s\''
-        
-       # elif(Type == 'message-list'):
-        #	return
-        
-      	#elif(Type == 'message'):
-	#      	return
-    
 	elif(Type == 'rawdata'):
 	    return '\'s\''
         else:
