@@ -41,22 +41,22 @@ class {{mabbrev}}(Message):
     {% for abbrev, Type, Format in abb_type_form_list if Type is not none -%}
    	{% if Type == 'rawdata' or Type == 'plaintext' %}
     nbytes = len(self.{{abbrev}})
-	struct.pack_into('<H' + str(nbytes) + {{Format}},buffer,offset, nbytes, self.{{abbrev}})
+        struct.pack_into('<H' + str(nbytes) + {{Format}},buffer,offset, nbytes, self.{{abbrev}})
         offset += struct.calcsize('<H' + str(nbytes) + {{Format}})
         {% elif Type == 'message' %}
     struct.pack_into('<H',buffer,offset,self.{{abbrev}}.mgid)
         offset += struct.calcsize('<H')
         offset = self.{{abbrev}}.serializeFields(buffer,offset)
         {% elif Type == 'message-list' %}
-	struct.pack_into('<H',buffer,offset, len(self.{{abbrev}}))
-    	offset += struct.calcsize('<H')
+    struct.pack_into('<H',buffer,offset, len(self.{{abbrev}}))
+        offset += struct.calcsize('<H')
     	for i in range(0,len(self.{{abbrev}})):
     	    struct.pack_into('<H',buffer,offset,self.{{abbrev}}[i].mgid)
             offset += struct.calcsize('<H')
     	    offset = self.{{abbrev}}[i].serializeFields(buffer,offset)   
 	{% else %}
-	struct.pack_into('<' + {{Format}},buffer,offset, self.{{abbrev}})
-    	offset += struct.calcsize('<' + {{Format}})
+    struct.pack_into('<' + {{Format}},buffer,offset, self.{{abbrev}})
+        offset += struct.calcsize('<' + {{Format}})
     {% endif %}  
     {% endfor %}
     return offset 
@@ -65,8 +65,8 @@ class {{mabbrev}}(Message):
     {% for abbrev, Type, Format in abb_type_form_list if Type is not none -%}
     {% if Type == 'rawdata' or Type == 'plaintext' %}
     Nbytes = struct.unpack_from('<H',buffer,offset)
-    	offset += struct.calcsize('<H')
-    	self.{{abbrev}} = struct.unpack_from('<' + str(Nbytes[0]) + {{Format}},buffer,offset)[0]
+        offset += struct.calcsize('<H')
+        self.{{abbrev}} = struct.unpack_from('<' + str(Nbytes[0]) + {{Format}},buffer,offset)[0]
         offset += struct.calcsize('<' + str(Nbytes[0]) + {{Format}})
     {% elif Type == 'message' %}
     mid = struct.unpack_from('<H',buffer,offset)[0]
