@@ -1,4 +1,3 @@
-##erro nos get e set, ver programa que le o xml
 #!/usr/bin/python
 import struct
 import time
@@ -95,7 +94,7 @@ class Message():
             struct.pack_into('<HHHdHBHB', buffer, offset, self.sync, self.mgid,  self.size,  self.timestamp,  self.src,  self.src_ent,  self.dst,  self.dst_ent)
 
             #calcular o checksum e substituir o 0
-	def serializeFooter(self, buffer, offset = DUNE_IMC_CONST_HEADER_SIZE + getPayloadSerializationSize()):
+        def serializeFooter(self, buffer, offset = DUNE_IMC_CONST_HEADER_SIZE + getPayloadSerializationSize()):
             struct.pack_into('<H', buffer, offset, 0)
 
         def deserializeFields(self):
