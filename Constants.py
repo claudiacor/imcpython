@@ -8,7 +8,7 @@ DUNE_IMC_CONST_GIT_INFO = ""
 DUNE_IMC_CONST_MD5 = "0a8e4d9f66cf472c35c9abd3c58fd140"
 
 # Synchronization number.
-DUNE_IMC_CONST_SYNC = 0xFE542
+DUNE_IMC_CONST_SYNC = 0xFE54
 
 # Reversed synchronization number.
 DUNE_IMC_CONST_SYNC_REV = 0x54FE
